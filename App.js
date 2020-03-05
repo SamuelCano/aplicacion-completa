@@ -1,17 +1,23 @@
-import * as React from 'react';
-import {View, StyleSheet, Alert, TextInput} from 'react-native';
+import React, {Component} from 'react';
+import {View, StyleSheet, Alert, TextInput, ActivityIndicator,Modal} from 'react-native';
 import { Container,Text, Header, Content, Card, CardItem,Body,Item, Label, Input,Icon,Button} from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Datos from './Envio';
+
 
 
 function Registrar({ navigation, route }) {
+
+  
   const [postText, setPostText] = React.useState('');
   const [postCorreo, setPostCorreo] = React.useState('');
   const [postPass, setPostPass] = React.useState('');
 
+ 
+
   return (
-    
+  
     <Container>
         <Header />
         <Content padder contentContainerStyle = {misEstilos.content}>
@@ -45,7 +51,7 @@ function Registrar({ navigation, route }) {
               </Body>
             </CardItem>
             <CardItem footer bordered>
-              <Button primary style ={misEstilos.boton} onPress={() => navigation.navigate('Registrado', { post: postText , correo:postCorreo, pass:postPass})}><Text> Registrarse</Text></Button>
+<Button primary style ={misEstilos.boton} onPress={() => navigation.navigate('Registrado', { post: postText , correo:postCorreo, pass:postPass})}><Text> Registrarse</Text></Button>
             </CardItem>        
           </Card>
         </Content>
@@ -53,8 +59,10 @@ function Registrar({ navigation, route }) {
   );
 }
 
+ 
 
-function Cambio({ navigation, route }) {
+
+function Cambio({ navigation, route })  {
   React.useEffect(() => {
     if (route.params?.post) {
       // Post updated, do something with `route.params.post`
@@ -76,15 +84,17 @@ function Cambio({ navigation, route }) {
     }
   }, [route.params?.pass]);
   
-  
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    return (
+      
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text style={{ margin: 10 }}>Nombre: {route.params?.post}</Text>
       <Text style={{ margin: 10 }}>Correo: {route.params?.correo}</Text>
       <Text style={{ margin: 10 }}>Password: {route.params?.pass}</Text>
-    </View>
+      </View>
+  
   );
 }
+
 
 function Apps({navigation}){
   return(
@@ -110,7 +120,7 @@ function Apps({navigation}){
               </Body>
             </CardItem>
             <CardItem footer bordered>
-              <Button primary style ={misEstilos.boton}><Text> Ingresar</Text></Button>
+              <Button primary style ={misEstilos.boton} onPress={() => navigation.navigate('Bienvenido')}><Text> Ingresar</Text></Button>
             </CardItem>
           </Card>
           <Card>
@@ -130,11 +140,16 @@ const Stack = createStackNavigator();
 
 export default class App extends React.Component {
 
+
+  
+
   constructor(props) {  
         super(props);  
-        this.state = {text: ''};  
+        this.state = {text: '',isLoading: true,showMe:true};  
+        
     }    
-
+  
+     
   render() {
     return (
       <NavigationContainer>
@@ -142,6 +157,7 @@ export default class App extends React.Component {
         <Stack.Screen name="Inicio" component={Apps} />
         <Stack.Screen name="Registro" component={Registrar} />
         <Stack.Screen name="Registrado" component={Cambio}/>
+        <Stack.Screen name="Bienvenido" component={Datos}/>
       </Stack.Navigator>
     </NavigationContainer>
 
@@ -164,5 +180,4 @@ const misEstilos = StyleSheet.create({
     paddingVertical: 35,
   }
   
-});
-
+})
